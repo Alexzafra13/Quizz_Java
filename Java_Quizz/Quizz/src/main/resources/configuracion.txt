@@ -1,0 +1,4 @@
+"numeroPreguntasTest":10
+"respuestasMultiples":No
+"cuentanNegativas":No
+"minimoAprobar":5
