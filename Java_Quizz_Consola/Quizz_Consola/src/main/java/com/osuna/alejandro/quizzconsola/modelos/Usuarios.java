@@ -22,6 +22,15 @@ public class Usuarios  implements Comparable<Usuarios>{
         this.role = role;
         this.created_at = created_at;
     }
+    //Constructor para inserciones o actualizaciones a base de datos dado que el id es autoincremental y no se debe insertar
+    public Usuarios(String username, String email, Rol role, String password_hash, LocalDate created_at) {
+        this.id = null;
+        this.username = username;
+        this.email = email;
+        this.role = role;
+        this.password_hash = password_hash;
+        this.created_at = created_at;
+    }
 
     public Integer getId() {
         return id;
