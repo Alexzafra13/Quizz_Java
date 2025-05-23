@@ -16,6 +16,27 @@ public class ConfiguracionManager {
         cargarConfiguracion();
     }
 
+    //Metodos para guardar los valores
+    private int extraerValorNumerico(String linea) {
+
+        String[] partes = linea.split(":");
+        if (partes.length > 1) {
+            String valorStr = partes[1].trim();
+            return Integer.parseInt(valorStr);
+        }
+        return 0;
+    }
+
+    private boolean extraerValorBooleano(String linea) {
+
+        String[] partes = linea.split(":");
+        if (partes.length > 1) {
+            String valorStr = partes[1].trim();
+            return valorStr.equalsIgnoreCase("Si");
+        }
+        return false;
+    }
+
     public void cargarConfiguracion() {
         try {
             List<String> lineas = AccesoFicheros.leerFichero(RUTA_CONFIGURACION);
@@ -64,25 +85,6 @@ public class ConfiguracionManager {
         }
     }
 
-    private int extraerValorNumerico(String linea) {
-
-        String[] partes = linea.split(":");
-        if (partes.length > 1) {
-            String valorStr = partes[1].trim();
-            return Integer.parseInt(valorStr);
-        }
-        return 0;
-    }
-
-    private boolean extraerValorBooleano(String linea) {
-
-        String[] partes = linea.split(":");
-        if (partes.length > 1) {
-            String valorStr = partes[1].trim();
-            return valorStr.equalsIgnoreCase("Si");
-        }
-        return false;
-    }
 
     public int getNumeroPreguntasTest() {
         return numeroPreguntasTest;

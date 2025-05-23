@@ -3,7 +3,6 @@ package com.osuna.alejandro.quizzconsola.modelos;
 import com.osuna.alejandro.quizzconsola.modelos.enums.Dificultad;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 public class Preguntas  implements Comparable<Preguntas>{
@@ -16,6 +15,15 @@ public class Preguntas  implements Comparable<Preguntas>{
 
     public Preguntas(Integer id, String preguntas_text, Integer categoria_id, Dificultad dificultad, LocalDate create_at) {
         this.id = id;
+        this.preguntas_text = preguntas_text;
+        this.categoria_id = categoria_id;
+        this.dificultad = dificultad;
+        this.create_at = create_at;
+    }
+
+    //Constructor para inserciones dado que el id es autoincremental
+    public Preguntas(String preguntas_text, Integer categoria_id, Dificultad dificultad, LocalDate create_at) {
+        this.id = null;
         this.preguntas_text = preguntas_text;
         this.categoria_id = categoria_id;
         this.dificultad = dificultad;
@@ -66,7 +74,9 @@ public class Preguntas  implements Comparable<Preguntas>{
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Preguntas preguntas = (Preguntas) o;
-        return Objects.equals(id, preguntas.id) && Objects.equals(preguntas_text, preguntas.preguntas_text) && Objects.equals(categoria_id, preguntas.categoria_id) && dificultad == preguntas.dificultad && Objects.equals(create_at, preguntas.create_at);
+        return Objects.equals(id, preguntas.id) && Objects.equals(preguntas_text, preguntas.preguntas_text)
+                && Objects.equals(categoria_id, preguntas.categoria_id)
+                && dificultad == preguntas.dificultad && Objects.equals(create_at, preguntas.create_at);
     }
 
     @Override

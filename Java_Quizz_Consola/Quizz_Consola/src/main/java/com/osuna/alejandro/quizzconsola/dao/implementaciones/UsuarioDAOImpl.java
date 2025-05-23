@@ -49,20 +49,19 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public Usuarios buscarPorEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new RuntimeException("El email no puede ser null o vacío");
+        }
 
         Usuarios user_email = null;
 
-        try {
-            String sql = "SELECT * FROM usuarios WHERE email = ?";
-
-            PreparedStatement pst = conDB.getConexion().prepareStatement(sql);
-
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement("SELECT * FROM usuarios WHERE email = ?")) {
             pst.setString(1, email);
 
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                user_email = mapearUsuario(rs);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    user_email = mapearUsuario(rs);
+                }
             }
 
         } catch (SQLException e) {
@@ -74,20 +73,19 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public Usuarios buscarPorUsername(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            throw new RuntimeException("El username no puede ser null o vacío");
+        }
 
         Usuarios user_name = null;
 
-        try {
-            String sql = "SELECT * FROM usuarios WHERE username = ?";
-
-            PreparedStatement pst = conDB.getConexion().prepareStatement(sql);
-
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement("SELECT * FROM usuarios WHERE username = ?")) {
             pst.setString(1, username);
 
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                user_name = mapearUsuario(rs);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    user_name = mapearUsuario(rs);
+                }
             }
 
         } catch (SQLException e) {
@@ -99,24 +97,22 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public Usuarios buscarPorId(Integer id) {
+        if (id == null || id <= 0) {
+            throw new RuntimeException("El ID no puede ser null o menor o igual a 0");
+        }
 
         Usuarios user_id = null;
 
-        try {
-            String sql = "SELECT * FROM usuarios WHERE id = ?";
-
-            PreparedStatement pst = conDB.getConexion().prepareStatement(sql);
-
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement("SELECT * FROM usuarios WHERE id = ?")) {
             pst.setInt(1, id);
 
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                user_id  = mapearUsuario(rs);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    user_id = mapearUsuario(rs);
+                }
             }
 
         } catch (SQLException e) {
-
             throw new RuntimeException("Error al buscar usuario por ID: " + id + " : " + e);
         }
 
@@ -125,14 +121,15 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean insertarUsuario(Usuarios usuario) {
+        if (usuario == null) {
+            throw new RuntimeException("El usuario no puede ser null");
+        }
 
         // Compruebo si existe duplicidad con el nombre o el email en la base de datos
         comprobacionDuplicidadUsuario(usuario);
 
-        try {
-            String sql = "INSERT INTO usuarios (username, email, password_hash, rol, created_at) VALUES (?, ?, ?, ?, ?)";
-
-            PreparedStatement pst = conDB.getConexion().prepareStatement(sql);
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement(
+                "INSERT INTO usuarios (username, email, password_hash, rol, created_at) VALUES (?, ?, ?, ?, ?)")) {
 
             pst.setString(1, usuario.getUsername());
             pst.setString(2, usuario.getEmail());
@@ -151,19 +148,19 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean actualizarUsuario(Usuarios usuario) {
+        if (usuario == null) {
+            throw new RuntimeException("El usuario no puede ser null");
+        }
 
         // Verifico que el usuario existe usando buscarPorId()
         if (buscarPorId(usuario.getId()) == null) {
-
             throw new RuntimeException("No se puede actualizar: usuario con ID " + usuario.getId() + " no existe");
         }
 
         comprobacionDuplicidadUsuario(usuario);
 
-        try {
-            String sql = "UPDATE usuarios SET username = ?, email = ?, password_hash = ?, rol = ?, created_at = ? WHERE id = ?";
-
-            PreparedStatement pst = conDB.getConexion().prepareStatement(sql);
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement(
+                "UPDATE usuarios SET username = ?, email = ?, password_hash = ?, rol = ?, created_at = ? WHERE id = ?")) {
 
             pst.setString(1, usuario.getUsername());
             pst.setString(2, usuario.getEmail());
@@ -183,72 +180,74 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
     public boolean eliminarUsuarioId(Integer id) {
+        if (id == null || id <= 0) {
+            throw new RuntimeException("El ID no puede ser null o menor o igual a 0");
+        }
 
         // Verifico que el usuario existe usando buscarPorId()
         if (buscarPorId(id) == null) {
             throw new RuntimeException("No se puede eliminar: usuario con ID " + id + " no existe");
         }
 
-        try {
-            String sql = "DELETE FROM usuarios WHERE id = ?";
-
-            PreparedStatement pst = conDB.getConexion().prepareStatement(sql);
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement("DELETE FROM usuarios WHERE id = ?")) {
             pst.setInt(1, id);
 
             int filasAfectadas = pst.executeUpdate();
             return filasAfectadas == 1;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar usuario con ID: " + id + " : " +  e);
+            throw new RuntimeException("Error al eliminar usuario con ID: " + id + " : " + e);
         }
     }
 
     @Override
     public boolean eliminarUsuarioNombre(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            throw new RuntimeException("El username no puede ser null o vacío");
+        }
 
-        if (buscarPorUsername(username) == null){
-
+        if (buscarPorUsername(username) == null) {
             throw new RuntimeException("No se puede eliminar: usuario con nombre " + username + " no existe");
         }
 
-        try {
-            String sql = "DELETE FROM usuarios WHERE username = ?";
-
-            PreparedStatement pst = conDB.getConexion().prepareStatement(sql);
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement("DELETE FROM usuarios WHERE username = ?")) {
             pst.setString(1, username);
 
             int filasAfectadas = pst.executeUpdate();
             return filasAfectadas == 1;
 
         } catch (SQLException e) {
-            throw new RuntimeException("Error al eliminar usuario con nombre: " + username + " : " +  e);
+            throw new RuntimeException("Error al eliminar usuario con nombre: " + username + " : " + e);
         }
-
     }
 
     @Override
     public boolean eliminarUsuarioEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new RuntimeException("El email no puede ser null o vacío");
+        }
 
-        if (buscarPorEmail(email) == null){
-
+        if (buscarPorEmail(email) == null) {
             throw new RuntimeException("No se puede eliminar: usuario con email " + email + " no existe");
         }
 
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement("DELETE FROM usuarios WHERE email = ?")) {
+            pst.setString(1, email);
 
+            int filasAfectadas = pst.executeUpdate();
+            return filasAfectadas == 1;
 
-        return false;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al eliminar usuario con email: " + email + " : " + e);
+        }
     }
 
     @Override
     public List<Usuarios> obtenerTodosLosUsuarios() {
         List<Usuarios> usuarios = new ArrayList<>();
 
-        try {
-            String sql = "SELECT * FROM usuarios";
-
-            PreparedStatement pst = conDB.getConexion().prepareStatement(sql);
-
-            ResultSet rs = pst.executeQuery();
+        try (PreparedStatement pst = conDB.getConexion().prepareStatement("SELECT * FROM usuarios");
+             ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
                 usuarios.add(mapearUsuario(rs));

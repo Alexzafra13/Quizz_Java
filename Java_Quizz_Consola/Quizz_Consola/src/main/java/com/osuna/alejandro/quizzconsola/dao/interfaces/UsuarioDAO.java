@@ -1,6 +1,7 @@
 package com.osuna.alejandro.quizzconsola.dao.interfaces;
 
 import com.osuna.alejandro.quizzconsola.modelos.Usuarios;
+import com.osuna.alejandro.quizzconsola.modelos.enums.Rol;
 
 import java.util.List;
 
