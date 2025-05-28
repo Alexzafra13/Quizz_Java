@@ -31,7 +31,7 @@ public class ServicioUsuario {
 
     // CRUD
     public boolean crearUsuario(String username, String email, String password, Rol rol) {
-        // Validaciones de negocio
+
         if (!validarEmail(email)) {
             throw new RuntimeException("Email no válido");
         }
@@ -40,7 +40,7 @@ public class ServicioUsuario {
             throw new RuntimeException("Password debe tener al menos 6 caracteres");
         }
 
-        // Crear usuario sin ID (constructor para insertar)
+        // Crear usuario sin ID (se cogeria del autoincrement de la BD)
         Usuarios nuevoUsuario = new Usuarios(username, email, password, rol, LocalDate.now());
 
         return usuarioDAO.insertarUsuario(nuevoUsuario);

@@ -3,6 +3,7 @@ package com.osuna.alejandro.quizzconsola.servicio;
 import com.osuna.alejandro.quizzconsola.dao.implementaciones.UsuarioDAOImpl;
 import com.osuna.alejandro.quizzconsola.dao.interfaces.UsuarioDAO;
 import com.osuna.alejandro.quizzconsola.modelos.Usuarios;
+import com.osuna.alejandro.quizzconsola.modelos.enums.Rol;
 
 public class ServicioAutentificacion {
 
@@ -28,6 +29,15 @@ public class ServicioAutentificacion {
         return false;
     }
 
+    public static void crearUsuarioAdminPorDefecto() {
+        Usuarios admin = usuarioDAO.buscarPorUsername("admin");
+        if (admin == null) {
+            ServicioUsuario servicioUsuario = new ServicioUsuario();
+            servicioUsuario.crearUsuario("admin", "admin@quizz.com", "admin", Rol.Admin);
+            System.out.println("Usuario admin creado por defecto");
+        }
+    }
+
     public static void cerrarSesion() {
         usuarioActual = null;
     }
@@ -50,6 +60,6 @@ public class ServicioAutentificacion {
     }
 
     public static boolean esAdmin(){
-        return usuarioActual != null && usuarioActual.getRole().toString().equals("Alumno");
+        return usuarioActual != null && usuarioActual.getRole().toString().equals("Admin");
     }
 }

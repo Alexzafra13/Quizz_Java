@@ -6,7 +6,9 @@ import java.sql.SQLException;
 
 public class ConexionBD {
 
-    private final String ruta_bd = "jdbc:sqlite:src/main/resources/database/DB_QUIZZ.db";
+    private final String ruta_bd = "jdbc:mysql://localhost:3306/quizz";
+    private final String usuario = "root";
+    private final String password = "Ale13091992!";
     private static Connection conexion;
 
     // Constructor simple
@@ -17,13 +19,13 @@ public class ConexionBD {
         try {
             if (conexion == null || conexion.isClosed()) {
 
-                conexion = DriverManager.getConnection(ruta_bd);
+                conexion = DriverManager.getConnection(ruta_bd, usuario, password);
 
-                System.out.println("Conexión a base de datos establecida correctamente");
+                System.out.println("Conexión a MySQL establecida correctamente");
             }
             return conexion;
         } catch (SQLException e) {
-            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
+            System.err.println("Error al conectar con MySQL: " + e.getMessage());
             return null;
         }
     }
@@ -33,7 +35,7 @@ public class ConexionBD {
             try {
                 conexion.close();
                 conexion = null;
-                System.out.println("Conexión a base de datos cerrada correctamente");
+                System.out.println("Conexión a MySQL cerrada correctamente");
             } catch (SQLException e) {
                 System.err.println("Error al cerrar la conexión: " + e.getMessage());
             }
