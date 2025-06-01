@@ -11,7 +11,6 @@ public class ConexionBD {
     private final String password = "Ale13091992!";
     private static Connection conexion;
 
-    // Constructor simple
     public ConexionBD() {
     }
 
@@ -21,11 +20,11 @@ public class ConexionBD {
 
                 conexion = DriverManager.getConnection(ruta_bd, usuario, password);
 
-                System.out.println("Conexión a MySQL establecida correctamente");
+                System.out.println("Conexión a la base de datos establecida correctamente");
             }
             return conexion;
         } catch (SQLException e) {
-            System.err.println("Error al conectar con MySQL: " + e.getMessage());
+            System.err.println("Error al conectar con la base de datos: " + e.getMessage());
             return null;
         }
     }
@@ -35,7 +34,7 @@ public class ConexionBD {
             try {
                 conexion.close();
                 conexion = null;
-                System.out.println("Conexión a MySQL cerrada correctamente");
+                System.out.println("Conexión a la base de datos cerrada correctamente");
             } catch (SQLException e) {
                 System.err.println("Error al cerrar la conexión: " + e.getMessage());
             }
