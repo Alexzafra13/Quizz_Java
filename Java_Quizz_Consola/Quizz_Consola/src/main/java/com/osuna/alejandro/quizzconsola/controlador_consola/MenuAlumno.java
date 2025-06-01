@@ -83,7 +83,7 @@ public class MenuAlumno {
 
     private void realizarTest(Integer testId) {
 
-        Integer usuarioId = 1;
+        Integer usuarioId = ServicioAutentificacion.getUsuarioActual().getId();
 
         List<Preguntas> preguntas = servicioTest.obtenerPreguntasDeTest(testId);
 

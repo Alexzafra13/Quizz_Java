@@ -65,7 +65,7 @@ public class InicializadorBaseDatos {
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 preguntas_text TEXT NOT NULL,
                 categoria_id INT NOT NULL,
-                dificultad ENUM('Fácil', 'Intermedio', 'Difícil'),
+                dificultad ENUM('Facil', 'Intermedio', 'Dificil'),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (categoria_id) REFERENCES categorias(id)
             )
@@ -325,6 +325,7 @@ public class InicializadorBaseDatos {
         stmt.execute("""
             CREATE FUNCTION tiempo_promedio_test(p_usuario_id INT)
             RETURNS INT
+            DETERMINISTIC
             BEGIN
                 DECLARE promedio_minutos INT DEFAULT 0;
                 
@@ -346,6 +347,7 @@ public class InicializadorBaseDatos {
         stmt.execute("""
             CREATE FUNCTION mejor_puntuacion_usuario(p_usuario_id INT)
             RETURNS DECIMAL(5,2)
+            DETERMINISTIC
             BEGIN
                 DECLARE mejor_nota DECIMAL(5,2) DEFAULT 0.00;
                 
@@ -470,50 +472,50 @@ public class InicializadorBaseDatos {
         // Matemáticas
         stmt.executeUpdate("""
         INSERT INTO preguntas (preguntas_text, categoria_id, dificultad) VALUES
-        ('¿Cuánto es 2 + 2?', 1, 'Fácil'),
-        ('¿Cuánto es 15 x 4?', 1, 'Fácil'),
+        ('¿Cuánto es 2 + 2?', 1, 'Facil'),
+        ('¿Cuánto es 15 x 4?', 1, 'Facil'),
         ('¿Cuál es la raíz cuadrada de 144?', 1, 'Intermedio'),
-        ('¿Cuánto es 7 x 8?', 1, 'Fácil'),
+        ('¿Cuánto es 7 x 8?', 1, 'Facil'),
         ('Resuelve: 2x + 5 = 15', 1, 'Intermedio')
     """);
 
         // Historia
         stmt.executeUpdate("""
         INSERT INTO preguntas (preguntas_text, categoria_id, dificultad) VALUES
-        ('¿En qué año llegó Colón a América?', 2, 'Fácil'),
+        ('¿En qué año llegó Colón a América?', 2, 'Facil'),
         ('¿En qué año comenzó la Segunda Guerra Mundial?', 2, 'Intermedio'),
-        ('¿Quién fue el primer presidente de Estados Unidos?', 2, 'Fácil'),
-        ('¿En qué año cayó el Imperio Romano de Occidente?', 2, 'Difícil'),
+        ('¿Quién fue el primer presidente de Estados Unidos?', 2, 'Facil'),
+        ('¿En qué año cayó el Imperio Romano de Occidente?', 2, 'Dificil'),
         ('¿Qué evento marcó el inicio de la Edad Media?', 2, 'Intermedio')
     """);
 
         // Ciencias
         stmt.executeUpdate("""
         INSERT INTO preguntas (preguntas_text, categoria_id, dificultad) VALUES
-        ('¿Cuál es la fórmula química del agua?', 3, 'Fácil'),
-        ('¿Cuántos planetas tiene el Sistema Solar?', 3, 'Fácil'),
+        ('¿Cuál es la fórmula química del agua?', 3, 'Facil'),
+        ('¿Cuántos planetas tiene el Sistema Solar?', 3, 'Facil'),
         ('¿Qué es la fotosíntesis?', 3, 'Intermedio'),
-        ('¿Cuál es la velocidad de la luz?', 3, 'Difícil'),
-        ('¿Qué gas es esencial para la respiración?', 3, 'Fácil')
+        ('¿Cuál es la velocidad de la luz?', 3, 'Dificil'),
+        ('¿Qué gas es esencial para la respiración?', 3, 'Facil')
     """);
 
         // Programación
         stmt.executeUpdate("""
         INSERT INTO preguntas (preguntas_text, categoria_id, dificultad) VALUES
-        ('¿Qué es un bucle for?', 4, 'Fácil'),
-        ('¿Qué es una variable?', 4, 'Fácil'),
+        ('¿Qué es un bucle for?', 4, 'Facil'),
+        ('¿Qué es una variable?', 4, 'Facil'),
         ('¿Qué es la herencia en POO?', 4, 'Intermedio'),
-        ('¿Qué es un patrón Singleton?', 4, 'Difícil'),
+        ('¿Qué es un patrón Singleton?', 4, 'Dificil'),
         ('¿Cuál es la diferencia entre una clase y un objeto?', 4, 'Intermedio')
     """);
 
         // Geografía
         stmt.executeUpdate("""
         INSERT INTO preguntas (preguntas_text, categoria_id, dificultad) VALUES
-        ('¿Cuál es la capital de España?', 5, 'Fácil'),
+        ('¿Cuál es la capital de España?', 5, 'Facil'),
         ('¿Cuál es el río más largo del mundo?', 5, 'Intermedio'),
-        ('¿En qué continente está Egipto?', 5, 'Fácil'),
-        ('¿Cuántos continentes hay?', 5, 'Fácil'),
+        ('¿En qué continente está Egipto?', 5, 'Facil'),
+        ('¿Cuántos continentes hay?', 5, 'Facil'),
         ('¿Cuál es la montaña más alta del mundo?', 5, 'Intermedio')
     """);
 
